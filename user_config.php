@@ -11,6 +11,11 @@ class User{
             die("Connection failed to database server.");
         }
     }
+    public function removeUser($id){
+        $sql="delete from users where id='$id'";
+        $this->db->query($sql);
+        header("location: users.php");
+    }
     public function getAllUsers(){
         $sql="select * from users order by id desc";
         return $this->db->query($sql);
