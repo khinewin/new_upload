@@ -11,6 +11,20 @@ class User{
             die("Connection failed to database server.");
         }
     }
+    public function resetUserPassword($id, $password, $confirm_password){
+        if($password==$confirm_password){
+            $enc_password=md5($password);
+            $sql="update users set password='$enc_password' where id='$id'";
+            $this->db->query($sql);
+            $_SESSION['info']="The new password have been changed.";
+            header("location: users.php");
+
+
+        }else{
+            $_SESSION['err']="The new password and confirm new password must match.";
+            header("location: users.php");
+        }
+    }
     public function removeUser($id){
         $sql="delete from users where id='$id'";
         $this->db->query($sql);

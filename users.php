@@ -28,6 +28,22 @@ if(isset($_SESSION['login'])){
 
 <div class="container">
     <div class="row">
+        <?php
+        if(isset($_SESSION['err'])){
+            ?>
+            <div class="alert alert-danger"><?php echo $_SESSION['err'] ?></div>
+            <?php
+        }
+        unset($_SESSION['err'])
+        ?>
+        <?php
+        if(isset($_SESSION['info'])){
+            ?>
+            <div class="alert alert-success"><?php echo $_SESSION['info'] ?></div>
+            <?php
+        }
+        unset($_SESSION['info'])
+        ?>
         <h3><span class="glyphicon glyphicon-magnet"></span> Available Users</h3>
 
         <table class="table table-hover" id="userTable">
@@ -54,7 +70,35 @@ if(isset($_SESSION['login'])){
                 <td><?php  if($u['role']){ echo "Administrator"; } else { echo "Standard";} ?></td>
                 <td><?php echo date("d-m-Y h:i A", strtotime($u['created_at'])) ?></td>
                 <td>
-                    <a href="#" title="Reset user account password."><span class="glyphicon glyphicon-refresh"></span></a>
+                    <a href="#" data-toggle="modal" data-target="#e<?php echo $u['id'] ?>" title="Reset user account password."><span class="glyphicon glyphicon-refresh"></span></a>
+                    <div id="e<?php echo $u['id'] ?>" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <form action="user_password_reset.php" method="post">
+                                    <input type="hidden" name="user_id" value="<?php echo $u['id'] ?>">
+                                <div class="modal-header">
+                                    Reset Password for <b><?php echo $u['name'] ?></b>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="new_password">New Password</label>
+                                        <input required type="password" name="new_password" id="new_password" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirm_new_password">Confirm New Password</label>
+                                        <input required type="password" name="confirm_new_password" id="confirm_new_password" class="form-control">
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Reset</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                     <?php if(!$u['role']){
                         ?>
                         <a href="#" data-toggle="modal" data-target="#d<?php echo $u['id'] ?>" class="text-danger" title="Remove user account."><span class="glyphicon glyphicon-trash"></span></a>

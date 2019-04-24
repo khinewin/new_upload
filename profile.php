@@ -20,7 +20,7 @@ $u=$user->getProfile()->fetch(PDO::FETCH_ASSOC);
 
 <div class="container">
     <div class="row">
-        <h1><?php if($_SESSION['admin']) { echo "I am admin."; }  ?></h1>
+
         <div class="col-sm-8 col-sm-offset-2">
             <h3><span class="glyphicon glyphicon-user"></span> User Profile</h3>
             <hr>
@@ -28,6 +28,7 @@ $u=$user->getProfile()->fetch(PDO::FETCH_ASSOC);
                 <img src="user.png" class="img-responsive img-thumbnail" style="margin-bottom: 10px;">
                 <p>Username: <em><?php echo $u['name'] ?></em></p>
                 <p>Email : <em><?php echo $u['email'] ?></em></p>
+                <p>Role : <?php if($u['role']){echo "Administrator";} else {echo "Standard";} ?></p>
                 <p>Join Date : <em><?php echo date("d-m-Y h:i A", strtotime($u['created_at'])) ?></em></p>
             </div>
         </div>
